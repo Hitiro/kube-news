@@ -36,4 +36,22 @@ jobs:
           tags: |
             hitirotsugawa/kube-news:latest
             hitirotsugawa/kube-news:${{github.run_number}}
+            
+  CD:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v3.0
+        with:
+          method: kubeconfig
+        # kubeconfig: Não tive acesso ao servidor para gerar o arquivo. k8s_config
+      
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v4.3
+        with:
+          images: coloarImagemAlteracao
+          manifets: |
+            k8s/deployment.yaml
+        
     
